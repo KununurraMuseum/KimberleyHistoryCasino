@@ -3,22 +3,22 @@ $(function(){
 
     // YOU MUST EDIT THIS SECTION
     // You must supply a Trove API key
-    var troveAPIKey = '';
+    var troveAPIKey = '9qnf10ej9pjv9mcs';
     // Either provide full API query here or include options below
-    var apiQuery = '';
+    var apiQuery = 'Wyndham HallsCreek Kimberley Broome FitzroyCrossing Derby Kalumburu DrysdaleRiverMission WyndhamPolice Dispersed';
     // Words you want to search for -- separate multiple values with spaces, eg:
     // var keywords = 'weather wragge';
-    var keywords = '';
+    var keywords = 'Meatworks Station Spearing Shooting LonelyGrave Rosewood Argyle Lissadell Carlton Goldrush ODonnell Pompey Stockdale CarrBoyd Ricketson McIlree Ashton Mulcahy';
     // How you want to combine keywords -- all, any, or phrase
     var keywordType = 'all'
     // Newspaper id numbers -- separate multiple values with spaces, eg:
     // var titles = '840 35';
-    var titles = '';
+    var titles = '80 25 9 36 111 47 63 118';
     // Add a byline, eg:
-    var byline = 'Created by <a href="https://timsherratt.org">Tim Sherratt</a>.'
+    var byline = 'Created by <a href="https://timsherratt.org">Tim Sherratt</a> and modified by DV_BoAB (Andrew Barker - Volunteer & President for :^) for the Kununurra Museum run by the Kununurra Historical Society. Also check out all of the web presence that I have created for KHS from the main website <a href="http://www.kununurra.org.au">http://www.kununurra.org.au</a>.'
     // var byline = '';
     // Add a tagline
-    var tagline = 'How well do you know your Australian history?';
+    var tagline = 'How well do you know your Australian history? Try some Kimberley History Roulette!' 'The Kununurra Museum (is F***ing Awesome! :^)' 'In Researching Kimberley History, Dont speculate!, Investigate!'' ;
     // Leave this alone unless you're publishing on a non-https server
     var useHttps = 'true';
 
@@ -26,28 +26,28 @@ $(function(){
     // These are the hints you get after each guess
     // gt100 means the guess was greater than the target year + 100 years etc
     var messages = {};
-    messages['gt100'] = "Ummm... really... that's your guess? It's much much earlier!";
-    messages['gt50'] = "Oh no! You're way off. It's a lot earlier.";
-    messages['gt10'] = "Getting close, but it's still quite a bit earlier.";
+    messages['gt100'] = "Doh!... really... that's your guess? It's much much earlier!";
+    messages['gt50'] = "You Wallaby Brain, you're way off. It's a lot earlier.";
+    messages['gt10'] = "Getting close, like measuring with a greenhide rope on a wet day - Maggie Lilly Oral History about the Miles from Wyndham, but it's still quite a bit earlier.";
     messages['gt1'] = "Almost! Try a bit earlier.";
-    messages['lt100'] = "Come on, get serious! It's much much later.";
-    messages['lt50'] = "Nope, missed the mark there. It's a lot later.";
-    messages['lt10'] = "Not bad, but it's still quite a bit later.";
-    messages['lt1'] = "So close! Try a bit later.";
+    messages['lt100'] = "Doh, get Real! It's much much later.";
+    messages['lt50'] = "You can do better than that. It's a lot later.";
+    messages['lt10'] = "Close-ish, but it's still quite a bit later.";
+    messages['lt1'] = "Oh dear! So close! Try just a bit later.";
 
     // These are the messages you get if you guess correctly
     // The numbers 1-10 represent to number of guesses taken
     var success_messages = [];
-    success_messages[1] = 'What! How did you... are you cheating?';
-    success_messages[2] = 'The force is strong with this one...';
+    success_messages[1] = 'What Now! How did you... are you cheating?';
+    success_messages[2] = 'Ooh Look Out now, the force is strong with this one...';
     success_messages[3] = 'We salute you and your profound temporal knowledge!';
     success_messages[4] = 'Excellent work!';
-    success_messages[5] = "Don't get cocky kid...";
+    success_messages[5] = "Alright! But NOT that flash kid...";
     success_messages[6] = 'A good solid effort. Some room for improvement.';
     success_messages[7] = 'Not bad. Needs to pay more attention in class.';
     success_messages[8] = 'You had us worried, but you got there in the end.';
-    success_messages[9] = 'Living dangerously huh? You only just made it.';
-    success_messages[10] = 'Eeek! A last gasp victory!';
+    success_messages[9] = 'Living dangerously, like a true Kimberley Gold-Rusher huh? You only just made it.';
+    success_messages[10] = 'Eeek! A last gasp victory! Eureka - You made it to the gold!';
 
     // YOU DON'T REALLY NEED TO EDIT ANYTHING ELSE
 
@@ -74,7 +74,7 @@ $(function(){
                     q = words.join('+AND+');
                 }
             } else {
-                q = '+';
+                q = '%20';
             }
             query += '&q=' + q;
             if (titles !== '') {
@@ -105,20 +105,15 @@ $(function(){
         }
     }
     function get_api_result(query, type) {
-        return $.ajax({
+        $.ajax({
             "dataType": "jsonp",
             "url": query,
-            "timeout": 10000
-        })
-        .retry({times: 5, timeout: 1000})
-        .done(function(results) {
-            console.log('Success!');
-            process_results(results, type);
-        })
-        .fail(function(xmlReq, txtStatus, errThrown){
-            console.log(txtStatus);
-            $("#article").hideLoading();
-            $("#headline").text("Oh no! Something went wrong... Click 'Reload' to try again.");
+            "success": function(results) {
+                process_results(results, type);
+            },
+            error: function(xmlReq, txtStatus, errThrown){
+                $('#status').text(xmlReq.responseText);
+            }
         });
     }
     function process_results(results, type) {
@@ -249,5 +244,3 @@ $(function(){
     $('#byline').html(byline);
     get_random_article();
 });
-
-
